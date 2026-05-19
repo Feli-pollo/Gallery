@@ -1,0 +1,11 @@
+ <div class="h-20 w-full flex items-center justify-between bg-white border-b-2 border-gray-200 px-4">
+    <div class="flex items-center space-x-4 gap-10">
+        <nav><a href=""></a>Explorar</nav>
+        <nav><a href=""></a>Regiones</nav>
+        <nav><a href=""></a>Favoritos</nav> 
+    </div>
+   
+    <div class="flex items-center space-x-4 gap-5">
+        <app-search (findSearch)="findSearch($event)"></app-search>
+    </div>
+ </div>

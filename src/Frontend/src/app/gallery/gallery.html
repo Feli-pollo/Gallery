@@ -1,1 +1,6 @@
-<p>gallery works!</p>
+<!-- CONTENIDO CON TARJETAS -->
+<div class="grid grid-cols-3 gap-4 mb-4 place-items-center w-full">
+    @for (item of pokeList; track $index) {
+        <app-card [currentCard]="pokeList[$index]"></app-card>
+    } 
+</div>

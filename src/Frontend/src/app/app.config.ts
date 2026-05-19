@@ -2,10 +2,12 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import { provideLucideIcons, LucideCircleCheck, LucideHouse } from '@lucide/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideRouter(routes),
+    provideLucideIcons(LucideCircleCheck, LucideHouse),
   ]
 };
