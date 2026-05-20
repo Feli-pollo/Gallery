@@ -1,3 +1,6 @@
+using System.Security.Cryptography.X509Certificates;
+using Backend.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,6 +38,37 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapGet("/pokemon", () =>
+{
+    // return "Pikachu, Bulbasaur, Charmander, Squirtle";
+    return GetPokemons();
+});
+
+List<PokeCard> GetPokemons()
+{
+    List<PokeCard> pokemons;
+    pokemons = [];
+    PokeCard bulbasaur = new PokeCard()
+    {
+        Nombre = "Bulbasaur",
+        PokedexNumber = 1,
+        Imagen = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+        Type = 
+            [
+            new PokeType { Type = "Grass", Color = "#9bcc50" },
+            new PokeType { Type = "Poison", Color = "#b97fc9" }
+            ]
+    };
+    pokemons.Add(bulbasaur);
+    
+    return pokemons;
+}
+
+// app.MapGet("/pokemon/{id}");
+// app.MapPut("/pokemon");
+// app.MapDelete("/pokemon/{id}");
+
 
 app.Run();
 
