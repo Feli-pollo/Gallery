@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Gallery } from './gallery/gallery';
 import { Card } from './card/card';
-import { Search } from './search/search';
+import { Search } from './shared/search/search';
 import { Header } from './header/header';
 import { MainLayout } from './shared/main-layout/main-layout';
 
