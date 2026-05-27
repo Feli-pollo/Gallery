@@ -6,10 +6,11 @@ import { Header } from "../header/header";
 import { SearchService } from '../shared/search.service';
 import { PokemonService } from '../shared/pokemon.service';
 import { PokeType } from '../poke-type';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-gallery',
-  imports: [Card, Search, Header],
+  imports: [CommonModule, Card, Search, Header],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })

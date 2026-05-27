@@ -30,7 +30,7 @@ export class Card implements OnInit, OnChanges {
     } else {
       this.cardClass = `w-75 h-auto p-4 border-4 border-slate-900 shadow-xl rounded-lg`;
       this.gradientStyle = {
-        'background-color': this.currentCard?.type[0]?.color ?? '#FFFFFF'
+        'background-color': this.currentCard?.type?.[0]?.color ?? '#000000'
       }
     };
   }

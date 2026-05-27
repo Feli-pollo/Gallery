@@ -3,6 +3,15 @@ using Microsoft.Data.SqlClient;
 using Backend.Models;
 using System.Data;
 using System.Threading.Tasks;
+using System.Security.Principal;
+using Backend.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +25,32 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Ingresa el token JWT asi: {token}"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddCors(
     options =>
@@ -30,7 +64,33 @@ builder.Services.AddCors(
         });
     }
 );
+
+var jwtKey = builder.Configuration["Jwt:Key"];
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
+        };
+    });
+
+builder.Services.AddAuthorization();
+// SERVICIOS PROPIOS
+builder.Services.AddTransient<PokemonService>();
+builder.Services.AddTransient<LoginService>();
+
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseCors("AngularPolicy");
 
 // Configure the HTTP request pipeline.
@@ -62,35 +122,29 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/pokemon", (IDbConnection db) =>
+app.MapGet("/pokemon", (PokemonService service) =>
 {
-    // return "Pikachu, Bulbasaur, Charmander, Squirtle";
-    return GetPokemons(db);
+    return service.GetPokemons();
+})
+.RequireAuthorization(policy => policy.RequireRole("Admin"));
+
+app.MapGet("/pokemonByType/{type}", (PokemonService service, string type) =>
+{
+    return service.GetPokemons();
 });
 
-async Task<List<PokeCard>> GetPokemons(IDbConnection db)
+app.MapPost("/login", async (LoginService service, Login login) =>
 {
-    List<PokeCard> pokemons;
-    pokemons = [];
-
-    var sqlQuery = "SELECT * FROM Pokemon";
-    var pokeDB = await db.QueryAsync<PokeCard>(sqlQuery);
-    pokemons = pokeDB.ToList();
-    // PokeCard bulbasaur = new PokeCard()
-    // {
-    //     Nombre = "Bulbasaur",
-    //     PokedexNumber = 1,
-    //     Imagen = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-    //     Type =
-    //         [
-    //         new PokeType { Type = "Grass", Color = "#9bcc50" },
-    //         new PokeType { Type = "Poison", Color = "#b97fc9" }
-    //         ]
-    // };
-    // pokemons.Add(bulbasaur);
-
-    return pokemons;
-}
+    var result = await service.Login(login);
+    if (result is null)
+    {
+        return Results.BadRequest("Usuario o contraseña incorrectos");
+    }
+    else
+    {
+        return Results.Ok(result);
+    }
+});
 
 // app.MapGet("/pokemon/{id}");
 // app.MapPut("/pokemon");
@@ -103,3 +157,5 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
+
