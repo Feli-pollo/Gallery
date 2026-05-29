@@ -5,16 +5,18 @@ import { Card } from './card/card';
 import { Search } from './shared/search/search';
 import { Header } from './header/header';
 import { MainLayout } from './shared/main-layout/main-layout';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     // {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: '', component: MainLayout,
+    {
+        path: '', canActivate: [authGuard], component: MainLayout,
         children: [
-            {path: 'header', component: Header},
-            {path: 'search', component: Search},
-            {path: 'card', component: Card},
-            {path: 'gallery', component: Gallery}
+            { path: 'header', component: Header },
+            { path: 'search', component: Search },
+            { path: 'card', component: Card },
+            { path: 'gallery', component: Gallery }
         ]
     },
-    {path: 'login', component: Login}
+    { path: 'login', component: Login }
 ];
