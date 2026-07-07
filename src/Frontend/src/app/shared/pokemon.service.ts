@@ -7,10 +7,10 @@ import { PokeCard } from '../poke-card';
 })
 export class PokemonService {
   // private http = inject(HttpClient);
-  private apiUrl = "http://localhost:5062/pokemon";
-  constructor(private http: HttpClient){}
+  private apiUrl = "/api/pokemon";
+  constructor(private http: HttpClient) { }
 
-  getPokemons(){
+  getPokemons() {
     return this.http.get<PokeCard[]>(this.apiUrl);
   }
 }
