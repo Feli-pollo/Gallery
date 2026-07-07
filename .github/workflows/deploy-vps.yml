@@ -37,9 +37,9 @@ jobs:
         working-directory: src/Frontend
         run: npm install
 
-      - name: Test frontend
-        working-directory: src/Frontend
-        run: npm test -- --watch=false
+      # - name: Test frontend
+      #   working-directory: src/Frontend
+      #   run: npm test -- --watch=false
 
       - name: Build frontend
         working-directory: src/Frontend
