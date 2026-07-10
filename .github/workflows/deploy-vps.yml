@@ -163,7 +163,7 @@ jobs:
           mkdir -p deployment/deploy/sql deployment/docs/SQLScripts
           cp compose.yml deployment/
           cp deploy/sql/init.sql deployment/deploy/sql/
-          cp docs/SQLScripts/SeedFelis.sql deployment/docs/SQLScripts/
+          cp docs/SQLScripts/SeedPokemons.sql deployment/docs/SQLScripts/
 
           {
             printf "APP_DOMAIN='%s'\n" "$APP_DOMAIN"
