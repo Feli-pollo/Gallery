@@ -1,6 +1,6 @@
 <!-- CONTENIDO CON TARJETAS -->
-<div class="grid grid-cols-3 gap-4 mb-4 place-items-center w-full">
+<div class="gallery-grid">
     @for (item of pokeList(); track $index) {
-    <app-card [currentCard]="item"></app-card>
+    <app-card [currentCard]="item" [index]="$index"></app-card>
     }
 </div>

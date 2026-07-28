@@ -6,9 +6,8 @@ import { PokeCard } from '../poke-card';
   providedIn: 'root',
 })
 export class PokemonService {
-  // private http = inject(HttpClient);
-  private apiUrl = "/api/pokemon";
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
+  private apiUrl = '/api/v1/pokemon';
 
   getPokemons() {
     return this.http.get<PokeCard[]>(this.apiUrl);

@@ -1,65 +1,63 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
-    <div class="w-full max-w-md">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
-            <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
-                Login
-            </h2>
+<div class="login-page">
+    <div class="pokeball-bg"></div>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <span class="logo-text">Poke</span><span class="logo-accent">Gallery</span>
+                <p class="login-subtitle">Inicia sesión para explorar fanarts</p>
+            </div>
 
             @if (error()) {
-                <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4">
+                <div class="error-message">
                     {{ error() }}
                 </div>
             }
 
-            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="space-y-4">
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Username
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        Usuario
                     </label>
                     <input
                         name="user"
-                        #user="ngModel"
                         [(ngModel)]="username"
                         required
                         type="text"
-                        placeholder="Enter your username"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="Tu nombre de usuario"
+                        class="form-input"
                     />
                 </div>
 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Password
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        Contraseña
                     </label>
                     <input
                         name="password"
-                        #password="ngModel"
                         [(ngModel)]="password"
                         required
                         type="password"
-                        placeholder="Enter your password"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="Tu contraseña"
+                        class="form-input"
                     />
                 </div>
 
                 <button
                     type="submit"
                     [disabled]="loginForm.invalid || isLoading()"
-                    class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold py-2 px-4 rounded-md transition-colors"
+                    class="btn-submit"
                 >
                     @if (isLoading()) {
-                        <span>Logging in...</span>
+                        <span>Iniciando sesión...</span>
                     } @else {
-                        <span>Login</span>
+                        <span>Iniciar Sesión</span>
                     }
                 </button>
             </form>
 
-            <p class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?
-                <a routerLink="/register" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium">
-                    Register here
-                </a>
+            <p class="register-link">
+                ¿No tienes cuenta?
+                <a routerLink="/register">Regístrate aquí</a>
             </p>
         </div>
     </div>
