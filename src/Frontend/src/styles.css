@@ -3,7 +3,7 @@
 /* Pokemon Fonts */
 @font-face {
     font-family: 'Pokemon Classic';
-    src: url('/assets/fonts/Pokemon Classic.ttf') format('truetype');
+    src: url('/fonts/PokemonClassic.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -11,7 +11,7 @@
 
 @font-face {
     font-family: 'Pokemon Solid';
-    src: url('/assets/fonts/Pokemon Solid.ttf') format('truetype');
+    src: url('/fonts/PokemonSolid.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
