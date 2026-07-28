@@ -1,41 +1,42 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LoginService } from '../shared/login.service';
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  imports: [FormsModule],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+    selector: 'app-login',
+    imports: [FormsModule, RouterLink],
+    templateUrl: './login.html',
+    styleUrl: './login.css',
 })
 export class Login {
-  service = inject(LoginService);
-  login = {
-    user: '',
-    password: ''
-  };
+    private loginService = inject(LoginService);
+    private router = inject(Router);
 
-  onSubmit(form: any) {
-    if (form.invalid) {
-      return;
-    }
-    console.log(form);
-    //LOGICA PARA EL LOGIN
-    this.service.login(this.login).subscribe({
-      next: (response) => {
-        let status = response.status;
-        if (status === 200) {
-          let data = response.body;
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('expirationDate', data.expirationDate);
+    username = '';
+    password = '';
+    isLoading = signal(false);
+    error = signal<string | null>(null);
+
+    onSubmit(form: any) {
+        if (form.invalid) {
+            return;
         }
-        console.log(response);
-      },
-      error: (err) => {
-        console.error(err);
-        alert(err.error);
-      }
 
-    })
-  }
+        this.isLoading.set(true);
+        this.error.set(null);
+
+        this.loginService.login({
+            user: this.username,
+            password: this.password
+        }).subscribe({
+            next: () => {
+                this.router.navigate(['/gallery']);
+            },
+            error: (err) => {
+                this.isLoading.set(false);
+                this.error.set(err.error?.error || 'Invalid username or password');
+            }
+        });
+    }
 }

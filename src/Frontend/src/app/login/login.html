@@ -1,16 +1,66 @@
-<div class="flex items-center justify-center content-center min-h-screen">
-    <div class="w-100 h-100 bg-gray-400 flex items-center justify-center rounded-md">
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
+    <div class="w-full max-w-md">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+            <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
+                Login
+            </h2>
 
-        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="flex flex-col gap-4">
-            <label for="username" class="text-white font-bold">Nombre de Usuario</label>
-            <input name="user" #user="ngModel" [(ngModel)]="login.user" required type="text"
-                placeholder="Escribe tu usuario"
-                class="rounded-md bg-white/80 px-3 py-2 text-sm font-semibold text-black inset-ring inset-ring-black/5">
-            <label for="password" class="text-white font-bold">Contraseña</label>
-            <input name="password" #password="ngModel" [(ngModel)]="login.password" required type="password"
-                class="rounded-md bg-white/80 px-3 py-2 text-sm font-semibold text-black inset-ring inset-ring-black/5">
-            <button type="submit" [disabled]="loginForm.invalid"
-                class="rounded-md bg-black/30 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20">Apachurrale</button>
-        </form>
+            @if (error()) {
+                <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4">
+                    {{ error() }}
+                </div>
+            }
+
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Username
+                    </label>
+                    <input
+                        name="user"
+                        #user="ngModel"
+                        [(ngModel)]="username"
+                        required
+                        type="text"
+                        placeholder="Enter your username"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Password
+                    </label>
+                    <input
+                        name="password"
+                        #password="ngModel"
+                        [(ngModel)]="password"
+                        required
+                        type="password"
+                        placeholder="Enter your password"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    [disabled]="loginForm.invalid || isLoading()"
+                    class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold py-2 px-4 rounded-md transition-colors"
+                >
+                    @if (isLoading()) {
+                        <span>Logging in...</span>
+                    } @else {
+                        <span>Login</span>
+                    }
+                </button>
+            </form>
+
+            <p class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+                Don't have an account?
+                <a routerLink="/register" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium">
+                    Register here
+                </a>
+            </p>
+        </div>
     </div>
 </div>

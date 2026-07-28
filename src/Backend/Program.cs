@@ -2,29 +2,26 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Backend.Models;
 using System.Data;
-using System.Threading.Tasks;
-using System.Security.Principal;
 using Backend.Services;
+using Backend.Endpoints;
+using Backend.Middleware;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar conexion para DB
+// Database connection
 builder.Services.AddScoped<IDbConnection>(sp =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
-    var conectionString = configuration.GetConnectionString("PokemonConection");
-    return new SqlConnection(conectionString);
+    var connectionString = configuration.GetConnectionString("PokemonConection");
+    return new SqlConnection(connectionString);
 });
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -37,7 +34,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Ingresa el token JWT asi: {token}"
+        Description = "Enter your JWT token"
     });
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -54,23 +51,22 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-var frontendOrigin = builder.Configuration["Cors:FrontendOrigin"] ?? "http://localhost:4200";
 
-builder.Services.AddCors(
-    options =>
+// CORS
+var frontendOrigin = builder.Configuration["Cors:FrontendOrigin"] ?? "http://localhost:4200";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularPolicy", policy =>
     {
-        options.AddPolicy("AngularPolicy", policy =>
-        {
-            policy
+        policy
             .WithOrigins(frontendOrigin)
             .AllowAnyHeader()
             .AllowAnyMethod();
-        });
-    }
-);
+    });
+});
 
+// JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
-
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -88,36 +84,58 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
-// SERVICIOS PROPIOS
+
+// Application services
 builder.Services.AddTransient<PokemonService>();
 builder.Services.AddTransient<LoginService>();
+
+// Health checks
+builder.Services.AddHealthChecks();
+
+// Forwarded headers for reverse proxy
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =
         ForwardedHeaders.XForwardedFor |
         ForwardedHeaders.XForwardedProto;
-
     options.KnownNetworks.Clear();
     options.KnownProxies.Clear();
 });
 
 var app = builder.Build();
+
+// Middleware pipeline
 app.UseForwardedHeaders();
 app.UseHttpsRedirection();
+
+// Global exception handling
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AngularPolicy");
+
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Health check endpoint
+app.MapHealthChecks("/health")
+    .AllowAnonymous()
+    .WithTags("Health");
 
+// Map endpoints by domain
+app.MapAuthEndpoints();
+app.MapPokemonEndpoints();
+
+// Legacy endpoints (keeping for backward compatibility)
 app.MapGet("/weatherforecast", () =>
 {
+    var summaries = new[]
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
@@ -131,40 +149,9 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/pokemon", (PokemonService service) =>
-{
-    return service.GetPokemons();
-})
-.RequireAuthorization(policy => policy.RequireRole("Admin"));
-
-app.MapGet("/pokemonByType/{type}", (PokemonService service, string type) =>
-{
-    return service.GetPokemons();
-});
-
-app.MapPost("/login", async (LoginService service, Login login) =>
-{
-    var result = await service.Login(login);
-    if (result is null)
-    {
-        return Results.BadRequest("Usuario o contraseña incorrectos");
-    }
-    else
-    {
-        return Results.Ok(result);
-    }
-});
-
-// app.MapGet("/pokemon/{id}");
-// app.MapPut("/pokemon");
-// app.MapDelete("/pokemon/{id}");
-
-
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
-
-

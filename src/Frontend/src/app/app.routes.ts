@@ -1,22 +1,31 @@
 import { Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Gallery } from './gallery/gallery';
-import { Card } from './card/card';
-import { Search } from './shared/search/search';
-import { Header } from './header/header';
 import { MainLayout } from './shared/main-layout/main-layout';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-    // {path: '', redirectTo: 'home', pathMatch: 'full'},
     {
-        path: '', canActivate: [authGuard], component: MainLayout,
+        path: '',
+        canActivate: [authGuard],
+        component: MainLayout,
         children: [
-            { path: 'header', component: Header },
-            { path: 'search', component: Search },
-            { path: 'card', component: Card },
-            { path: 'gallery', component: Gallery }
+            { path: '', redirectTo: 'gallery', pathMatch: 'full' },
+            { path: 'gallery', component: Gallery },
         ]
     },
-    { path: 'login', component: Login }
+    { path: 'login', component: Login },
+    {
+        path: 'register',
+        loadComponent: () => import('./register/register').then(m => m.Register)
+    },
+    {
+        path: 'error',
+        loadComponent: () => import('./error-page/error-page').then(m => m.ErrorPage)
+    },
+    {
+        path: '**',
+        redirectTo: 'error',
+        pathMatch: 'full'
+    }
 ];
