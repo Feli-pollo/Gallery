@@ -41,19 +41,19 @@ export class Gallery implements OnInit {
     }
 
     findSearch(searchName: string) {
-        this.searchVersion.update(v => v + 1);
+        // Clear the list first to force DOM recreation and trigger animations
+        this.pokeList.set([]);
 
-        if (!searchName || searchName.trim() === '') {
-            this.pokeList.set([...this.pokeListFull]);
-        } else {
-            const filtered = this.pokeListFull.filter(poke =>
-                poke.nombre.toLowerCase().includes(searchName.toLowerCase())
-            );
-            this.pokeList.set(filtered);
-        }
-    }
-
-    trackByPokemon(index: number, item: PokeCard): string {
-        return `${item.pokedexNumber}-${this.searchVersion()}`;
+        // Use setTimeout to ensure Angular processes the empty state first
+        setTimeout(() => {
+            if (!searchName || searchName.trim() === '') {
+                this.pokeList.set([...this.pokeListFull]);
+            } else {
+                const filtered = this.pokeListFull.filter(poke =>
+                    poke.nombre.toLowerCase().includes(searchName.toLowerCase())
+                );
+                this.pokeList.set(filtered);
+            }
+        }, 10);
     }
 }

@@ -1,6 +1,6 @@
 <!-- CONTENIDO CON TARJETAS -->
 <div class="gallery-grid">
-    @for (item of pokeList(); track trackByPokemon($index, item)) {
+    @for (item of pokeList(); track item.pokedexNumber) {
     <app-card [currentCard]="item" [index]="$index"></app-card>
     }
 </div>
