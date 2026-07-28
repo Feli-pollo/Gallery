@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+bower_components/
+
+# Build output
+dist/
+bin/
+obj/
+out/
+
+# IDE - VS Code
+.vscode/
+
+# IDE - Visual Studio
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# IDE - JetBrains
+.idea/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+
+# Command Code AI
+.commandcode/
+
+# Angular
+.angular/
+
+# .NET
+*.dll
+*.exe
+*.pdb
+*.cache
+*.nupkg
+*.snupkg
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+# SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# Docker
+docker-compose.override.yml
+
+# Secrets - NEVER commit these
+appsettings.Development.json
+appsettings.Local.json
+*.pfx
+*.key
+*.pem
