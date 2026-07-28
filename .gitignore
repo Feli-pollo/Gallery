@@ -67,6 +67,7 @@ docker-compose.override.yml
 appsettings.Development.json
 appsettings.Local.json
 secrets.md
+session.md
 *.pfx
 *.key
 *.pem
