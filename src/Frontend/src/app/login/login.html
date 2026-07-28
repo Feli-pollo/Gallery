@@ -6,7 +6,7 @@
                 <span class="logo-poke">Poke</span><span class="logo-gallery">
                     <span class="letter-g">G</span><span class="letter-a1">a</span><span class="letter-l1">l</span><span class="letter-l2">l</span><span class="letter-e">e</span><span class="letter-r">r</span><span class="letter-y">y</span>
                 </span>
-                <p class="login-subtitle">Inicia sesión para explorar fanarts</p>
+                <p class="login-subtitle">Sign in to explore fanart</p>
             </div>
 
             @if (error()) {
@@ -18,28 +18,28 @@
             <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="login-form">
                 <div class="form-group">
                     <label for="username" class="form-label">
-                        Usuario
+                        Username
                     </label>
                     <input
                         name="user"
                         [(ngModel)]="username"
                         required
                         type="text"
-                        placeholder="Tu nombre de usuario"
+                        placeholder="Enter your username"
                         class="form-input"
                     />
                 </div>
 
                 <div class="form-group">
                     <label for="password" class="form-label">
-                        Contraseña
+                        Password
                     </label>
                     <input
                         name="password"
                         [(ngModel)]="password"
                         required
                         type="password"
-                        placeholder="Tu contraseña"
+                        placeholder="Enter your password"
                         class="form-input"
                     />
                 </div>
@@ -50,16 +50,16 @@
                     class="btn-submit"
                 >
                     @if (isLoading()) {
-                        <span>Iniciando sesión...</span>
+                        <span>Signing in...</span>
                     } @else {
-                        <span>Iniciar Sesión</span>
+                        <span>Sign In</span>
                     }
                 </button>
             </form>
 
             <p class="register-link">
-                ¿No tienes cuenta?
-                <a routerLink="/register">Regístrate aquí</a>
+                Don't have an account?
+                <a routerLink="/register">Register here</a>
             </p>
         </div>
     </div>

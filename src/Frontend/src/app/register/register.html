@@ -6,7 +6,7 @@
                 <span class="logo-poke">Poke</span><span class="logo-gallery">
                     <span class="letter-g">G</span><span class="letter-a1">a</span><span class="letter-l1">l</span><span class="letter-l2">l</span><span class="letter-e">e</span><span class="letter-r">r</span><span class="letter-y">y</span>
                 </span>
-                <p class="register-subtitle">Crea tu cuenta para compartir fanarts</p>
+                <p class="register-subtitle">Create an account to share fanart</p>
             </div>
 
             @if (error()) {
@@ -17,14 +17,14 @@
 
             <form (ngSubmit)="register()" class="register-form">
                 <div class="form-group">
-                    <label class="form-label">Usuario *</label>
+                    <label class="form-label">Username *</label>
                     <input
                         type="text"
                         [(ngModel)]="username"
                         name="username"
                         required
                         class="form-input"
-                        placeholder="Elige un nombre de usuario"
+                        placeholder="Choose a username"
                     />
                 </div>
 
@@ -36,42 +36,42 @@
                         name="email"
                         required
                         class="form-input"
-                        placeholder="tu@email.com"
+                        placeholder="your@email.com"
                     />
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Nombre para mostrar</label>
+                    <label class="form-label">Display Name</label>
                     <input
                         type="text"
                         [(ngModel)]="displayName"
                         name="displayName"
                         class="form-input"
-                        placeholder="Tu nombre (opcional)"
+                        placeholder="Your display name (optional)"
                     />
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Contraseña *</label>
+                    <label class="form-label">Password *</label>
                     <input
                         type="password"
                         [(ngModel)]="password"
                         name="password"
                         required
                         class="form-input"
-                        placeholder="Mínimo 6 caracteres"
+                        placeholder="At least 6 characters"
                     />
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Confirmar Contraseña *</label>
+                    <label class="form-label">Confirm Password *</label>
                     <input
                         type="password"
                         [(ngModel)]="confirmPassword"
                         name="confirmPassword"
                         required
                         class="form-input"
-                        placeholder="Repite tu contraseña"
+                        placeholder="Repeat your password"
                     />
                 </div>
 
@@ -81,16 +81,16 @@
                     class="btn-submit"
                 >
                     @if (isLoading()) {
-                        <span>Creando cuenta...</span>
+                        <span>Creating account...</span>
                     } @else {
-                        <span>Registrarse</span>
+                        <span>Register</span>
                     }
                 </button>
             </form>
 
             <p class="login-link">
-                ¿Ya tienes cuenta?
-                <a routerLink="/login">Inicia sesión aquí</a>
+                Already have an account?
+                <a routerLink="/login">Sign in here</a>
             </p>
         </div>
     </div>

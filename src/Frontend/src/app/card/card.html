@@ -3,15 +3,15 @@
         <!-- Shimmer effect overlay -->
         <div class="card-shimmer"></div>
 
-        <!-- Type badge -->
-        <div class="type-badge">
-            {{ typeNames }}
-        </div>
-
-        <!-- Pokemon name -->
+        <!-- Pokemon name + number -->
         <div class="card-header">
-            <span class="pokedex-number">#{{ currentCard.pokedexNumber }}</span>
-            <h2 class="pokemon-name">{{ currentCard.nombre }}</h2>
+            <div class="name-row">
+                <h2 class="pokemon-name">{{ currentCard.nombre }}</h2>
+                <span class="pokedex-number">#{{ currentCard.pokedexNumber }}</span>
+            </div>
+            <div class="type-badge">
+                {{ typeNames }}
+            </div>
         </div>
 
         <!-- Image container -->
@@ -28,15 +28,15 @@
         <div class="card-actions">
             <button class="btn-primary" (click)="exploreFanart()">
                 <span class="btn-icon">🖼️</span>
-                <span>Explorar Fanart</span>
+                <span>View Fanart</span>
             </button>
 
             <div class="btn-row">
                 <button class="btn-secondary" (click)="uploadFanart()">
                     <span class="btn-icon">➕</span>
-                    <span>Subir</span>
+                    <span>Upload</span>
                 </button>
-                <button class="btn-icon-only" (click)="toggleFavorite($event)" title="Añadir a favoritos">
+                <button class="btn-icon-only" (click)="toggleFavorite($event)" title="Add to favorites">
                     ❤️
                 </button>
             </div>
