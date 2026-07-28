@@ -30,17 +30,26 @@
     margin-bottom: 2rem;
 }
 
-.logo-text {
-    font-family: 'Bungee', cursive;
-    font-size: 2rem;
+.logo-poke {
+    font-family: 'Pokemon Solid', cursive;
+    font-size: 2.5rem;
     color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.logo-accent {
-    font-family: 'Bungee', cursive;
-    font-size: 2rem;
-    color: #f5d020;
+.logo-gallery {
+    font-family: 'Pokemon Solid', cursive;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+.letter-g { color: #F08030; }
+.letter-a1 { color: #6890F0; }
+.letter-l1 { color: #F8D030; }
+.letter-l2 { color: #78C850; }
+.letter-e { color: #A040A0; }
+.letter-r { color: #A890F0; }
+.letter-y { color: #F85888; }
 
 .login-subtitle {
     color: rgba(255, 255, 255, 0.6);

@@ -68,8 +68,9 @@
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     border-radius: 9999px;
-    font-size: 0.65rem;
-    font-weight: 600;
+    font-family: 'Pokemon Classic', cursive;
+    font-size: 0.6rem;
+    font-weight: 400;
     color: white;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -86,23 +87,24 @@
 
 .pokedex-number {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-family: 'Pokemon Classic', cursive;
+    font-size: 0.7rem;
+    font-weight: 400;
     color: rgba(255, 255, 255, 0.6);
     letter-spacing: 0.1em;
     margin-bottom: 0.25rem;
 }
 
 .pokemon-name {
-    font-family: 'Bungee', cursive;
-    font-size: 1.15rem;
+    font-family: 'Pokemon Classic', cursive;
+    font-size: 1rem;
     font-weight: 400;
     color: white;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     margin: 0;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 /* Image Container */
@@ -157,8 +159,9 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 0.5rem;
     color: white;
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-family: 'Pokemon Classic', cursive;
+    font-size: 0.7rem;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     cursor: pointer;
@@ -188,8 +191,9 @@
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 0.5rem;
     color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-family: 'Pokemon Classic', cursive;
+    font-size: 0.65rem;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.2s ease;
 }

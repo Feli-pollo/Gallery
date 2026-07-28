@@ -1,14 +1,32 @@
 @import 'tailwindcss';
 
-/* Pokemon Font - Bungee is similar to the Pokemon logo style */
-@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;500;600;700&display=swap');
+/* Pokemon Fonts */
+@font-face {
+    font-family: 'Pokemon Classic';
+    src: url('/assets/fonts/Pokemon Classic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pokemon Solid';
+    src: url('/assets/fonts/Pokemon Solid.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Google Fonts - Inter for body text */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Root variables */
 :root {
     --bg-primary: #1a1a2e;
     --bg-secondary: #16213e;
     --text-primary: #ffffff;
-    --font-pokemon: 'Bungee', cursive;
+    --font-pokemon: 'Pokemon Classic', cursive;
+    --font-logo: 'Pokemon Solid', cursive;
     --font-body: 'Inter', sans-serif;
 }
 
@@ -48,7 +66,12 @@ body {
 
 /* Pokemon name font */
 .pokemon-name {
-    font-family: var(--font-pokemon);
+    font-family: 'Pokemon Classic', cursive;
+}
+
+/* Logo font */
+.logo-pokemon {
+    font-family: 'Pokemon Solid', cursive;
 }
 
 /* Button styles */

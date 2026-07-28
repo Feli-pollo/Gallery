@@ -25,18 +25,46 @@
     gap: 0;
 }
 
-.logo-text {
-    font-family: 'Bungee', cursive;
-    font-size: 1.5rem;
+.logo-poke {
+    font-family: 'Pokemon Solid', cursive;
+    font-size: 1.6rem;
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.logo-accent {
-    font-family: 'Bungee', cursive;
-    font-size: 1.5rem;
-    color: #f5d020;
+.logo-gallery {
+    font-family: 'Pokemon Solid', cursive;
+    font-size: 1.6rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Multi-colored Gallery letters - Pokémon type colors */
+.letter-g {
+    color: #F08030; /* Fire */
+}
+
+.letter-a1 {
+    color: #6890F0; /* Water */
+}
+
+.letter-l1 {
+    color: #F8D030; /* Electric */
+}
+
+.letter-l2 {
+    color: #78C850; /* Grass */
+}
+
+.letter-e {
+    color: #A040A0; /* Poison */
+}
+
+.letter-r {
+    color: #A890F0; /* Flying */
+}
+
+.letter-y {
+    color: #F85888; /* Psychic */
 }
 
 /* Navigation */
@@ -88,8 +116,8 @@
         display: none;
     }
 
-    .logo-text,
-    .logo-accent {
+    .logo-poke,
+    .logo-gallery {
         font-size: 1.25rem;
     }
 }
