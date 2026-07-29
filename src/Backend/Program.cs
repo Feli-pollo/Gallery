@@ -89,9 +89,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddTransient<PokemonService>();
 builder.Services.AddTransient<LoginService>();
 
-// Health checks
-builder.Services.AddHealthChecks();
-
 // Forwarded headers for reverse proxy
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -156,7 +153,7 @@ app.MapGet("/v1/health", () => Results.Ok(new { status = "ok" }))
     .WithTags("Health")
     .WithOpenApi();
 
-app.MapHealthChecks("/health")
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }))
     .AllowAnonymous()
     .WithTags("Health");
 
