@@ -83,14 +83,16 @@ jobs:
           tags: |
             ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
             ${{ env.FRONTEND_IMAGE }}:latest
-            
+
       - name: Request GitHub OIDC token
         id: oidc
         run: |
           set -euo pipefail
+
           token_json="$(curl -fsSL \
             -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
             "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=deploy.kity.dev")"
+
           oidc_token="$(printf '%s' "$token_json" | jq -r '.value')"
           printf 'token=%s\n' "$oidc_token" >> "$GITHUB_OUTPUT"
 
@@ -101,7 +103,9 @@ jobs:
           IMAGE: ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
         run: |
           set -euo pipefail
-          curl -fsSL -X POST "https://deploy.kity.dev/api/deployments/vibe-gallery-frontend" \
+
+          body_file="$(mktemp)"
+          status="$(curl -sS -o "$body_file" -w "%{http_code}" -X POST "https://deploy.kity.dev/api/deployments/vibe-gallery-frontend" \
             -H "Content-Type: application/json" \
             -d "$(jq -n \
               --arg oidc_token "$OIDC_TOKEN" \
@@ -109,7 +113,15 @@ jobs:
               --arg ghcr_username "${{ github.repository_owner }}" \
               --arg ghcr_token "$GHCR_TOKEN" \
               --arg git_sha "${{ github.sha }}" \
-              '{oidc_token:$oidc_token,image:$image,ghcr_username:$ghcr_username,ghcr_token:$ghcr_token,git_sha:$git_sha}')"
+              '{oidc_token:$oidc_token,image:$image,ghcr_username:$ghcr_username,ghcr_token:$ghcr_token,git_sha:$git_sha}')")"
+
+          echo "HTTP status: $status"
+          cat "$body_file"
+          echo
+
+          if [ "$status" -ge 400 ]; then
+            exit 1
+          fi
 
       - name: Deploy backend through VPS broker
         env:
@@ -118,7 +130,9 @@ jobs:
           IMAGE: ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
         run: |
           set -euo pipefail
-          curl -fsSL -X POST "https://deploy.kity.dev/api/deployments/vibe-gallery-backend" \
+
+          body_file="$(mktemp)"
+          status="$(curl -sS -o "$body_file" -w "%{http_code}" -X POST "https://deploy.kity.dev/api/deployments/vibe-gallery-backend" \
             -H "Content-Type: application/json" \
             -d "$(jq -n \
               --arg oidc_token "$OIDC_TOKEN" \
@@ -126,5 +140,12 @@ jobs:
               --arg ghcr_username "${{ github.repository_owner }}" \
               --arg ghcr_token "$GHCR_TOKEN" \
               --arg git_sha "${{ github.sha }}" \
-              '{oidc_token:$oidc_token,image:$image,ghcr_username:$ghcr_username,ghcr_token:$ghcr_token,git_sha:$git_sha}')"
-              
+              '{oidc_token:$oidc_token,image:$image,ghcr_username:$ghcr_username,ghcr_token:$ghcr_token,git_sha:$git_sha}')")"
+
+          echo "HTTP status: $status"
+          cat "$body_file"
+          echo
+
+          if [ "$status" -ge 400 ]; then
+            exit 1
+          fi
