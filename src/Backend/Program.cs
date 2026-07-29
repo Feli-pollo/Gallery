@@ -156,9 +156,10 @@ app.MapGet("/", () => Results.Ok(new { status = "ok" }))
     .AllowAnonymous()
     .WithTags("Health");
 
-app.MapGet("/api/v1/health", () => Results.Ok(new { status = "ok" }))
+app.MapGet("/v1/health", () => Results.Ok(new { status = "ok" }))
     .AllowAnonymous()
-    .WithTags("Health");
+    .WithTags("Health")
+    .WithOpenApi();
 
 app.MapHealthChecks("/health")
     .AllowAnonymous()

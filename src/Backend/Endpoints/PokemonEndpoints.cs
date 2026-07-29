@@ -6,7 +6,7 @@ public static class PokemonEndpoints
 {
     public static void MapPokemonEndpoints(this WebApplication app)
     {
-        var pokemonGroup = app.MapGroup("/api/v1/pokemon")
+        var pokemonGroup = app.MapGroup("/v1/pokemon")
             .WithTags("Pokemon");
 
         pokemonGroup.MapGet("/", async (PokemonService service) =>

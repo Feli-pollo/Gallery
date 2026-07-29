@@ -7,7 +7,7 @@ public static class AuthEndpoints
 {
     public static void MapAuthEndpoints(this WebApplication app)
     {
-        var authGroup = app.MapGroup("/api/v1/auth")
+        var authGroup = app.MapGroup("/v1/auth")
             .WithTags("Authentication");
 
         authGroup.MapPost("/register", async (LoginService service, RegisterRequest request) =>
