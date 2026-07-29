@@ -122,11 +122,6 @@ app.UseCors("AngularPolicy");
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Health check endpoint
-app.MapHealthChecks("/health")
-    .AllowAnonymous()
-    .WithTags("Health");
-
 // Map endpoints by domain
 app.MapAuthEndpoints();
 app.MapPokemonEndpoints();
