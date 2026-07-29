@@ -98,7 +98,7 @@ jobs:
         env:
           OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
           GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
-          IMAGE: ${{ env.FRONTEND_IMAGE }}
+          IMAGE: ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
         run: |
           set -euo pipefail
           curl -fsSL -X POST "https://deploy.kity.dev/api/deployments/vibe-gallery-frontend" \
@@ -115,7 +115,7 @@ jobs:
         env:
           OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
           GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
-          IMAGE: ${{ env.BACKEND_IMAGE }}
+          IMAGE: ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
         run: |
           set -euo pipefail
           curl -fsSL -X POST "https://deploy.kity.dev/api/deployments/vibe-gallery-backend" \
