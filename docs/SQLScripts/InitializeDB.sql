@@ -1,7 +1,3 @@
-CREATE DATABASE FeliGalleryDB;
-GO
-
-
 USE [FeliGalleryDB]
 GO
 /****** Objeto: Table [dbo].[Pokemon] Fecha de script: 28/07/2026 09:39:02 p. m. ******/
