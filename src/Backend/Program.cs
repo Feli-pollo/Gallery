@@ -106,7 +106,10 @@ var app = builder.Build();
 
 // Middleware pipeline
 app.UseForwardedHeaders();
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 // Global exception handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -148,6 +151,18 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapGet("/", () => Results.Ok(new { status = "ok" }))
+    .AllowAnonymous()
+    .WithTags("Health");
+
+app.MapGet("/api/v1/health", () => Results.Ok(new { status = "ok" }))
+    .AllowAnonymous()
+    .WithTags("Health");
+
+app.MapHealthChecks("/health")
+    .AllowAnonymous()
+    .WithTags("Health");
 
 app.Run();
 
