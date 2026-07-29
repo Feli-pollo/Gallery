@@ -19,9 +19,8 @@ env:
   FRONTEND_IMAGE: ghcr.io/feli-pollo/vibegallery-frontend
 
 jobs:
-  test-build-deploy:
+  validate-frontend:
     runs-on: ubuntu-latest
-    environment: RackNerd
 
     steps:
       - name: Checkout
@@ -46,6 +45,13 @@ jobs:
         working-directory: src/Frontend
         run: npm run build
 
+  validate-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -53,6 +59,14 @@ jobs:
 
       - name: Build backend
         run: dotnet build src/Backend/Backend.csproj --configuration Release
+
+  publish-backend:
+    runs-on: ubuntu-latest
+    needs: validate-backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -74,6 +88,24 @@ jobs:
             ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
             ${{ env.BACKEND_IMAGE }}:latest
 
+  publish-frontend:
+    runs-on: ubuntu-latest
+    needs: validate-frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR for publishing
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push frontend
         uses: docker/build-push-action@v6
         with:
@@ -84,6 +116,12 @@ jobs:
             ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
             ${{ env.FRONTEND_IMAGE }}:latest
 
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: publish-frontend
+    environment: RackNerd
+
+    steps:
       - name: Request GitHub OIDC token
         id: oidc
         run: |
@@ -122,6 +160,24 @@ jobs:
           if [ "$status" -ge 400 ]; then
             exit 1
           fi
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: publish-backend
+    environment: RackNerd
+
+    steps:
+      - name: Request GitHub OIDC token
+        id: oidc
+        run: |
+          set -euo pipefail
+
+          token_json="$(curl -fsSL \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=deploy.kity.dev")"
+
+          oidc_token="$(printf '%s' "$token_json" | jq -r '.value')"
+          printf 'token=%s\n' "$oidc_token" >> "$GITHUB_OUTPUT"
 
       - name: Deploy backend through VPS broker
         env:
