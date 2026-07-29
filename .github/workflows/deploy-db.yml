@@ -48,5 +48,5 @@ jobs:
               --arg database_name "$APP_DATABASE_NAME" \
               --arg database_user "$APP_DATABASE_USER" \
               --arg database_password "$APP_DATABASE_PASSWORD" \
-              --arg seed_sql "$APP_DATABASE_SEED_SQL" \
+              --arg seed_sql "" \
               '{oidc_token:$oidc_token,database_name:$database_name,database_user:$database_user,database_password:$database_password,seed_sql:$seed_sql}')"
