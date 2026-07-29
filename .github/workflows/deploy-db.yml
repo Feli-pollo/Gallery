@@ -1,0 +1,48 @@
+name: Deploy DB VibeGallery to VPS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+concurrency:
+  group: vibegallery-RackNerd
+  cancel-in-progress: false
+
+jobs:
+  test-build-deploy:
+    runs-on: ubuntu-latest
+    environment: RackNerd
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Request GitHub OIDC token
+        id: oidc
+        run: |
+          set -euo pipefail
+          token_json="$(curl -fsSL \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=deploy.kity.dev")"
+          oidc_token="$(printf '%s' "$token_json" | jq -r '.value')"
+          printf 'token=%s\n' "$oidc_token" >> "$GITHUB_OUTPUT"
+          
+      - name: Deploy DB through VPS broker
+        env:
+          OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
+          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -X POST "https://deploy.kity.dev/api/databases/vibe-gallery-backend" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg oidc_token "$OIDC_TOKEN" \
+              --arg database_name "$APP_DATABASE_NAME" \
+              --arg database_user "$APP_DATABASE_USER" \
+              --arg database_password "$APP_DATABASE_PASSWORD" \
+              --arg seed_sql "$APP_DATABASE_SEED_SQL" \
+              '{oidc_token:$oidc_token,database_name:$database_name,database_user:$database_user,database_password:$database_password,seed_sql:$seed_sql}')"
