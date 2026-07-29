@@ -35,6 +35,10 @@ jobs:
         env:
           OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
           GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+          APP_DATABASE_NAME: ${{ vars.APP_DATABASE_NAME }}
+          APP_DATABASE_USER: ${{ vars.APP_DATABASE_USER }}
+          APP_DATABASE_SEED_SQL: ${{ vars.APP_DATABASE_SEED_SQL }}
+          APP_DATABASE_PASSWORD: ${{ secrets.APP_DATABASE_PASSWORD }}
         run: |
           set -euo pipefail
           curl -fsSL -X POST "https://deploy.kity.dev/api/databases/vibe-gallery-backend" \
