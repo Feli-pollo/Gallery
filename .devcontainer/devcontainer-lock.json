@@ -6,9 +6,9 @@
       "integrity": "sha256:ce6e5b54a1da409b24f84c624ec8973e6027c6e1bad0385fe65d7fa3e2db5bc8"
     },
     "ghcr.io/helpers4/devcontainer/angular-dev:1": {
-      "version": "1.0.2",
-      "resolved": "ghcr.io/helpers4/devcontainer/angular-dev@sha256:d83d5ed5ee79c69a51a964aee8feecd067a00260d18c3d050173858bd99daa1a",
-      "integrity": "sha256:d83d5ed5ee79c69a51a964aee8feecd067a00260d18c3d050173858bd99daa1a"
+      "version": "1.0.6",
+      "resolved": "ghcr.io/helpers4/devcontainer/angular-dev@sha256:cb15db015734d01ea45782394bee0e53c42f8f09c0bec22f94ec4bb2024fcaa4",
+      "integrity": "sha256:cb15db015734d01ea45782394bee0e53c42f8f09c0bec22f94ec4bb2024fcaa4"
     }
   }
 }
